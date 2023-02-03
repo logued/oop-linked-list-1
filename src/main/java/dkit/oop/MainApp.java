@@ -1,17 +1,21 @@
 package dkit.oop;
 /**                                     Feb 2023
- * Linked Lists are useful when we expect a lot of
- * inserts and removals of elements at various places.
- *
- * Here we demonstrate the use of the Java LinkedList
- * class for common operations.
+ * Linked Lists store elements in a sequence. (Nodes and Links)
+ * LinkedLists do not have indexes, so we cant access an element by its index position.
+ * Adding an element at end of list is FAST  O(1).
+ * To find an element, we must start at the beginning, and move through each element sequentially
+ * until we find the matching element. This can be slow if there are a lot of elements  O(N)
+ * Inserting or deleting elements at the start or end of a LinkedLIst is FAST  O(1)
+ * Accessing/Removing elements at the start or end of list is FAST  O(1)
  *
  * A ListIterator is used to move through the elements in a linked list,
- * and acts as a pointer between elements.
+ * and acts as a pointer to (between) elements.
+ *
  *
  */
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 public class MainApp
@@ -85,7 +89,8 @@ public class MainApp
 
         boolean insertedFlag = insertValueBeforeKey(staffList, "James", "Diana");
 
-        System.out.println("After insertBefore(): " + staffList);
+        System.out.println("After insertBefore()");
+        displayList( staffList );
 
         // How to Sort a LinkedList:
         // There is no convenient method available to sort a LinkedList.
@@ -143,6 +148,21 @@ public class MainApp
             }
         }
         return false; // not inserted, no key value founs
+    }
+
+    /**
+     * Display elements of a list using an iterator
+     * @param list
+     */
+    public void displayList( List<String> list ) {
+        ListIterator<String> iterator = list.listIterator();
+
+        System.out.print("List: ");
+        while (iterator.hasNext()) {
+            String name = iterator.next();     // get next value AND move iterator forward by one
+            System.out.print( name + ", ");
+        }
+        System.out.println();
     }
 }
 
