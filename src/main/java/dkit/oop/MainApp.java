@@ -14,33 +14,38 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-public class App
+public class MainApp
 {
-    public static void main(String[] args)
-    {
-        LinkedList<String> staffList = new LinkedList<>();
+    public static void main(String[] args) {
+        System.out.println("LinkedList sample App.");
+        MainApp app = new MainApp();
+        app.start();
+    }
 
-        staffList.addLast("Kyle");  // add at tail of list
+    private void start() {
+        LinkedList<String> staffList = new LinkedList<>();  // create new linked list object
+
+        staffList.addLast("Kyle");  // add at end/tail of the linked list
         staffList.addLast("Diana");
         staffList.addLast("Harry");
 
         System.out.println(staffList);
 
-        // Access elements one-by-one using for loop
+        // Access elements one-by-one using for-each loop
         for (String name : staffList) {
             System.out.println(name);
         }
 
-        // Search for an element in the list
+        // Search for an element in the list - contains() returns true or false
         if (staffList.contains("Diana")) {
             System.out.println("The list  contains() the name \"Diana\".");
         } else {
             System.out.println("The list does not contain \"Diana\".");
         }
 
-        staffList.addFirst("Zoe");     // ZKDH
-        staffList.addLast("Ralph");    // ZKDHR
-        staffList.addLast("Adam");     // ZKDHRA
+        staffList.addFirst("Zoe");     // Z KDH
+        staffList.addLast("Ralph");    // ZKDH R
+        staffList.addLast("Adam");     // ZKDHR A
 
         System.out.println("After additions: " + staffList);
 
@@ -53,7 +58,7 @@ public class App
         System.out.println("Iterators");
 
         // ListIterator
-        // Iterator is used to traverse the elements in a list.
+        // Iterator is used to iterate over the elements in a list.
         // Iterator can be moved forward and backwards.
         // '|' in the comments indicates the iterator position.
         ListIterator<String> iterator = staffList.listIterator(); // |KDH
@@ -61,24 +66,24 @@ public class App
         iterator.next(); // KD|H
 
         // Add more elements at iterator position
-        iterator.add("Juliet"); // KDJ|H
+        iterator.add("Juliet"); // KDJ|H    - iterator was at H, so Julie added before Harry
         iterator.add("Nina");   // KDJN|H
 
-        iterator.next(); // KDJNH|
+        iterator.next(); // KDJNH|      // iterator now points at "end"- which is just beyond the last element
 
         // Remove last traversed element
-        iterator.remove(); // KDJN|
+        iterator.remove(); // KDJN|     // removes element that the iterator has just passed over
 
         System.out.println(staffList);
 
-        staffList.addFirst("Nina");  // NKDJN  (two Ninas)
+        staffList.addFirst("Nina");  // NKDJN  (now two Ninas)
         System.out.println(staffList);
 
         removeAllMatches(staffList, "Nina");
 
         System.out.println("After call to removeAllMatches(): " +staffList);
 
-        insertValueBeforeKey(staffList, "James", "Diana");
+        boolean insertedFlag = insertValueBeforeKey(staffList, "James", "Diana");
 
         System.out.println("After insertBefore(): " + staffList);
 
@@ -91,10 +96,9 @@ public class App
         // of the correct size to store all the values from the linked list
         // Note: if you find that a linked list needs to be sorted often, then
         // it may be best to use an alternative data structure.
+        // The Idiom (way of doing something) is as follows:
         String[] staffArray = staffList.toArray(new String[0]);
-
         Arrays.sort(staffArray);
-
         // Convert an array, into a list, then into a new LinkedList
         LinkedList<String> sortedStaffList = new LinkedList<>(Arrays.asList(staffArray));
 
@@ -107,25 +111,27 @@ public class App
      * @param list (LinkedList)
      * @param key
      */
-    public static void removeAllMatches( LinkedList<String> list, String key)
+    public void removeAllMatches( LinkedList<String> list, String key)
     {
-        ListIterator<String> iterator = list.listIterator();  // reset the iterator
+        ListIterator<String> iterator = list.listIterator();  // initialize the iterator
 
         //Using an iterator to move over elements
         while (iterator.hasNext()) {
             if (iterator.next().equals(key)) {
-                iterator.remove();  // remove the one that we passed
+                iterator.remove();  // remove the one that we passed over
             }
         }
     }
 
     /**
-     * Insert a value into the list before the key
+     * Insert a value into the list before a specified key.
+     * If the key is not found, return false.
+     *
      * @param list
-     * @param key
-     * @param value
+     * @param key - the key value to be inserted
+     * @param value - the value to insert
      */
-    public static void insertValueBeforeKey(LinkedList<String> list, String value, String key)
+    public boolean insertValueBeforeKey(LinkedList<String> list, String value, String key)
     {
         ListIterator iterator = list.listIterator();
 
@@ -133,9 +139,10 @@ public class App
             if (iterator.next().equals(key)) {
                 iterator.previous();  // back up
                 iterator.add(value);
-                break;
+                return true;    // successful insertion
             }
         }
+        return false; // not inserted, no key value founs
     }
 }
 
